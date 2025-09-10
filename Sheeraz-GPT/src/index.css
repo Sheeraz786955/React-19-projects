@@ -6,7 +6,6 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  background-color:black;
 }
 .bg-primary-color{
   background-color: rgb(57, 57, 57);
@@ -17,3 +16,10 @@
 .screen_hight{
   height: 100vh;
 }
+.sidebar-screen-hight{
+  height: 80vh;
+}
+.hight-fit{
+  height: 85%;
+}
+
