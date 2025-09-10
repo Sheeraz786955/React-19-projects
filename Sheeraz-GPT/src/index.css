@@ -22,4 +22,13 @@
 .hight-fit{
   height: 85%;
 }
-
+.pointer{
+  cursor: pointer;
+}
+.hover-color:hover{
+    color: rgb(218, 218, 218);
+}
+.list-hover:hover{
+  background-color: black;
+  cursor: pointer;
+}

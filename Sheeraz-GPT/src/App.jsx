@@ -10,6 +10,9 @@ function App() {
   const [answer, setAnswer] = useState([]);
   const [recentHistory, setRecentHistory] = useState([]);
   const askQuestion = async () => {
+    if(!question){
+      return false
+    }
     const payLand = {
       contents: [
         {
@@ -28,7 +31,7 @@ function App() {
       setRecentHistory(history);
     } else {
       localStorage.setItem("history", JSON.stringify([question]));
-      setRecentHistory(question);
+      setRecentHistory([question]);
     }
 
     let response = await fetch(url, {
@@ -44,7 +47,18 @@ function App() {
       { type: "q", text: question },
       { type: "a", text: dataString },
     ]);
+    setQuestion('')
+   
   };
+  const delData=()=>{
+    localStorage.clear()
+    setRecentHistory([])
+  }
+  const isEnter=(event)=>{
+    if(event.key=="Enter"){
+      askQuestion()
+    }
+  }
   console.log(recentHistory);
   return (
     <>
@@ -53,16 +67,16 @@ function App() {
           <div className="col-2 bg-primary-color text-white   ">
             <h5 className="text-center my-3">
               Recent History{" "}
-              <span>
+              <span onClick={delData} className="pointer hover-color">
                 <i className="fa-regular fa-trash-can"></i>
               </span>
             </h5>
-            <div className="sidebar-screen-hight overflow-auto">
-              <ul>
+            <div className="sidebar-screen-hight truncate overflow-y-auto pe-2">
+              <ul className="list-unstyled">
                 {recentHistory &&
                   recentHistory.map((item, index) => (
-                    <li key={index} className="primary-color fs-5 fw-semibold">
-                      {item}
+                    <li key={index} className="primary-color fs-5 fw-semibold list-hover">
+                      * {item}
                     </li>
                   ))}
               </ul>
@@ -113,6 +127,7 @@ function App() {
                   className="form-control bg-primary-color text-white outline-black border-black input-focus rounded-0 border-0 outline-0"
                   placeholder="Ask me Anything...."
                   onChange={(event) => setQuestion(event.target.value)}
+                  onKeyDown={isEnter}
                   value={question}
                 />
                 <button
