@@ -64,3 +64,6 @@ background: linear-gradient(to left, #FF0000 20%, #1B2AFF 100%);
 .spinner-color{
   color: #ab00ef;
 }
+.input:disabled{
+  background-color:rgb(57, 57, 57); ;
+}
