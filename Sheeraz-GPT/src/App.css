@@ -16,3 +16,6 @@ input::placeholder {
     left: 12%;
 
 }
+.offcanvas-scroll {
+  overflow: hidden !important;
+}
