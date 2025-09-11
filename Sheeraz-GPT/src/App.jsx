@@ -123,7 +123,7 @@ function App() {
                       ) : (
                         item.text.map((ansItem, ansIndex) => (
                           <li
-                            className="text-white fw-semibold my-2"
+                            className="text-white fw-semibold my-1"
                             key={ansIndex}
                           >
                             <Answers
