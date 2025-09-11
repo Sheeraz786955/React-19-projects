@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import "./App.css";
 import MainForm from "./components/answers";
@@ -9,31 +9,38 @@ function App() {
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState([]);
   const [recentHistory, setRecentHistory] = useState([]);
+  const [selectHistory, setSelectHistory] = useState("");
+  const [spinner, setSpinner] = useState(false);
+
+  const scrollToans = useRef();
   const askQuestion = async () => {
-    if(!question){
-      return false
+    if (!question && !selectHistory) {
+      return false;
     }
+    const payLoadData = question || selectHistory;
     const payLand = {
       contents: [
         {
           parts: [
             {
-              text: question,
+              text: payLoadData,
             },
           ],
         },
       ],
     };
-    if (localStorage.getItem("history")) {
-      let history = JSON.parse(localStorage.getItem("history"));
-      history = [question, ...history];
-      localStorage.setItem("history", JSON.stringify(history));
-      setRecentHistory(history);
-    } else {
-      localStorage.setItem("history", JSON.stringify([question]));
-      setRecentHistory([question]);
+    if (question) {
+      if (localStorage.getItem("history")) {
+        let history = JSON.parse(localStorage.getItem("history"));
+        history = [question, ...history];
+        localStorage.setItem("history", JSON.stringify(history));
+        setRecentHistory(history);
+      } else {
+        localStorage.setItem("history", JSON.stringify([question]));
+        setRecentHistory([question]);
+      }
     }
-
+    setSpinner(true);
     let response = await fetch(url, {
       method: "POST",
       body: JSON.stringify(payLand),
@@ -44,22 +51,28 @@ function App() {
     dataString = dataString.map((item) => item.trim());
     setAnswer([
       ...answer,
-      { type: "q", text: question },
+      { type: "q", text: question || selectHistory },
       { type: "a", text: dataString },
     ]);
-    setQuestion('')
-   
+    setQuestion("");
+    setTimeout(() => {
+      scrollToans.current.scrollTop = scrollToans.current.scrollHeight;
+    }, 500);
+    setSpinner(false);
   };
-  const delData=()=>{
-    localStorage.clear()
-    setRecentHistory([])
-  }
-  const isEnter=(event)=>{
-    if(event.key=="Enter"){
-      askQuestion()
+  const delData = () => {
+    localStorage.clear();
+    setRecentHistory([]);
+  };
+  const isEnter = (event) => {
+    if (event.key == "Enter") {
+      askQuestion();
     }
-  }
-  console.log(recentHistory);
+  };
+  useEffect(() => {
+    askQuestion();
+  }, [selectHistory]);
+
   return (
     <>
       <div className="container-fluid bg-black">
@@ -71,11 +84,15 @@ function App() {
                 <i className="fa-regular fa-trash-can"></i>
               </span>
             </h5>
-            <div className="sidebar-screen-hight truncate overflow-y-auto pe-2">
+            <div className="sidebar-screen-hight truncate sidebar-screen-hight custom-scroll pe-2">
               <ul className="list-unstyled">
                 {recentHistory &&
                   recentHistory.map((item, index) => (
-                    <li key={index} className="primary-color fs-5 fw-semibold list-hover">
+                    <li
+                      onClick={() => setSelectHistory(item)}
+                      key={index}
+                      className="primary-color fs-5 fw-semibold list-hover"
+                    >
                       * {item}
                     </li>
                   ))}
@@ -84,7 +101,12 @@ function App() {
           </div>
 
           <div className="col-10 screen_hight position-relative pt-3">
-            <div className="container overflow-auto hight-fit">
+            <h1 className="heading-grad text-center display-5 fw-bold py-1">Hello User, Ask me Anything</h1>
+           
+            <div
+              ref={scrollToans}
+              className="container overflow-auto custom-scroll hight-fit"
+            >
               <div className="w-75 m-auto">
                 <ul className="list-unstyled">
                   {answer.map((item, index) => (
@@ -118,6 +140,13 @@ function App() {
                     </div>
                   ))}
                 </ul>
+                {spinner ? (
+                  <div class="d-flex justify-content-center">
+                    <div class="spinner-border m-5 spinner-color" role="status">
+                      <span class="visually-hidden">Loading...</span>
+                    </div>
+                  </div>
+                ) : null}
               </div>
             </div>
             <div className="w-75 m-auto bg-primary-color p-1 pt-3 rounded-pill px-3 input-position position-absolute">

@@ -9,7 +9,7 @@ function Answers({ ans, index, totelData ,type }) {
       setHeading(true);
       setAnswer(replaceStarHeadings(ans));
     }
-    console.log(totelData);
+  
   }, []);
 
   return (

@@ -20,7 +20,7 @@
   height: 80vh;
 }
 .hight-fit{
-  height: 85%;
+  height: 75%;
 }
 .pointer{
   cursor: pointer;
@@ -31,4 +31,36 @@
 .list-hover:hover{
   background-color: black;
   cursor: pointer;
+}
+
+.custom-scroll {
+  overflow-y: auto;    
+}
+
+
+.custom-scroll::-webkit-scrollbar {
+  width: 8px; 
+}
+
+.custom-scroll::-webkit-scrollbar-track {
+  background: #1e1e1e; 
+  border-radius: 10px;
+}
+
+.custom-scroll::-webkit-scrollbar-thumb {
+  background: rgb(50, 7, 79); 
+  border-radius: 10px;
+}
+
+.custom-scroll::-webkit-scrollbar-thumb:hover {
+  background: #040404; 
+}
+.heading-grad{
+background: #FF0000;
+background: linear-gradient(to left, #FF0000 20%, #1B2AFF 100%);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+}
+.spinner-color{
+  color: #ab00ef;
 }
