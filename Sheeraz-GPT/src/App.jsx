@@ -7,14 +7,13 @@ import Answers from "./components/answers";
 import History from "./components/history";
 import HistorySideBar from "./components/historysidebar";
 
-
 function App() {
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState([]);
   const [recentHistory, setRecentHistory] = useState([]);
   const [selectHistory, setSelectHistory] = useState("");
   const [spinner, setSpinner] = useState(false);
-  const [inputDisable, setInputDisable]=useState(false)
+  const [inputDisable, setInputDisable] = useState(false);
 
   const scrollToans = useRef();
   const askQuestion = async () => {
@@ -36,7 +35,11 @@ function App() {
     if (question) {
       if (localStorage.getItem("history")) {
         let history = JSON.parse(localStorage.getItem("history"));
+        history=history.slice(0,9)
         history = [question, ...history];
+      history=history.map((item)=>
+      item.charAt(0).toUpperCase()+item.slice(1).trim())
+        history=[...new Set(history)]
         localStorage.setItem("history", JSON.stringify(history));
         setRecentHistory(history);
       } else {
@@ -45,7 +48,7 @@ function App() {
       }
     }
     setSpinner(true);
-    setInputDisable(true)
+    setInputDisable(true);
     let response = await fetch(url, {
       method: "POST",
       body: JSON.stringify(payLand),
@@ -64,7 +67,7 @@ function App() {
       scrollToans.current.scrollTop = scrollToans.current.scrollHeight;
     }, 500);
     setSpinner(false);
-    setInputDisable(false)
+    setInputDisable(false);
   };
 
   const isEnter = (event) => {

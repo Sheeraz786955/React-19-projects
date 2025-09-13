@@ -19,6 +19,9 @@
 .sidebar-screen-hight{
   height: 75vh;
 }
+.sidebar-screen-hight-off{
+  height: 70vh;
+}
 .hight-fit{
   height: 75%;
 }
