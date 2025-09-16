@@ -11,7 +11,7 @@ function Todo({ todo, setTodoList }) {
       <div className="">
         {todo.map((items, index) => (
           <ul
-            className="list-unstyled border border-1 border-white rounded-3 m-4 position-relative"
+            className="list-unstyled border border-1 border-white rounded-3 m-4 position-relative list-hover"
             key={index}
           >
             <li

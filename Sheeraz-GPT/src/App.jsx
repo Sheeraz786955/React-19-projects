@@ -35,11 +35,12 @@ function App() {
     if (question) {
       if (localStorage.getItem("history")) {
         let history = JSON.parse(localStorage.getItem("history"));
-        history=history.slice(0,9)
+        history = history.slice(0, 9);
         history = [question, ...history];
-      history=history.map((item)=>
-      item.charAt(0).toUpperCase()+item.slice(1).trim())
-        history=[...new Set(history)]
+        history = history.map(
+          (item) => item.charAt(0).toUpperCase() + item.slice(1).trim()
+        );
+        history = [...new Set(history)];
         localStorage.setItem("history", JSON.stringify(history));
         setRecentHistory(history);
       } else {
@@ -109,7 +110,7 @@ function App() {
                 <ul className="list-unstyled">
                   {answer.map((item, index) => (
                     <div
-                      key={index + Math.random()}
+                      key={index}
                       className={
                         item.type == "q" ? "d-flex justify-content-end" : ""
                       }
@@ -118,7 +119,7 @@ function App() {
                         <li className="text-white text-end fw-semibold border border-1 p-2 pe-3 rounded-start-5 rounded-bottom-5 border-black bg-primary-color w-fit ">
                           <Answers
                             ans={item.text}
-                            index={index + Math.random()}
+                            index={index}
                             totelData={1}
                             type={item.type}
                           />
@@ -154,24 +155,26 @@ function App() {
               </div>
             </div>
             <div className="w-75 m-auto bg-primary-color p-1 pt-sm-3 rounded-pill px-3 input-position position-absolute">
-              <div className="input-group mb-sm-3">
-                <input
-                  type="text"
-                  className="form-control  input bg-primary-color text-white outline-black border-black input-focus rounded-0 border-0 outline-0"
-                  placeholder="Ask me Anything...."
-                  onChange={(event) => setQuestion(event.target.value)}
-                  onKeyDown={isEnter}
-                  value={question}
-                  disabled={inputDisable}
-                />
-                <button
-                  className="btn bg-primary-color text-white rounded-0 "
-                  type="button"
-                  onClick={askQuestion}
-                >
-                  Ask
-                </button>
-              </div>
+              <form onSubmit={(e) => e.preventDefault()}>
+                <div className="input-group mb-sm-3">
+                  <input
+                    type="text"
+                    className="form-control  input bg-primary-color text-white outline-black border-black input-focus rounded-0 border-0 outline-0"
+                    placeholder="Ask me Anything...."
+                    onChange={(event) => setQuestion(event.target.value)}
+                    onKeyDown={isEnter}
+                    value={question}
+                    disabled={inputDisable}
+                  />
+                  <button
+                    className="btn bg-primary-color text-white rounded-0 "
+                    type="button"
+                    onClick={askQuestion}
+                  >
+                    Ask
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
         </div>

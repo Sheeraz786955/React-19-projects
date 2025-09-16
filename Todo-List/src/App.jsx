@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useActionState, useState } from "react";
 import "./App.css";
 import Todo from "./components/Todo";
