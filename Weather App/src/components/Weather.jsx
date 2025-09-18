@@ -8,7 +8,7 @@ import { useActionState, useEffect, useState } from "react";
 function Weather() {
   const [weatherData, setWeatherData] = useState(null);
   const [loader, setLoader] = useState(false);
-  const mainCity = "Lahore";
+  const mainCity = "Vehari";
   const allIcons = {
     "01d": clear,
     "01n": clear,
@@ -31,7 +31,10 @@ function Weather() {
 
   const HundleForm = (prevData, formData) => {
     const city = formData.get("city");
-
+    if (!city) {
+      alert("⚠️ Please enter a city name.");
+      return null; // stop execution if empty
+    }
     return city;
   };
   const [data, action, pending] = useActionState(HundleForm);
@@ -51,7 +54,11 @@ function Weather() {
     });
     response = await response.json();
     let detailedData = response;
-
+    if (detailedData.cod == "404") {
+      alert(detailedData.message);
+      setLoader(false);
+      return;
+    }
     setWeatherData({
       temperature: Math.round(detailedData.main.temp),
       humidity: detailedData.main.humidity,
@@ -61,6 +68,7 @@ function Weather() {
       icon: allIcons[detailedData.weather[0].icon],
       desce: detailedData.weather[0].description,
     });
+
     setLoader(false);
   };
 
@@ -140,6 +148,10 @@ function Weather() {
               </div>
             </div>
           </div>
+          <h1 className=" text-center text-white pb-10">
+            Built and Design By{" "}
+            <a className=" font-bold text-lg cursor-pointer">Sheeraz Ahmad</a>
+          </h1>
         </div>
       </div>
     </>
